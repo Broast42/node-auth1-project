@@ -36,7 +36,7 @@ router.post("/login", async(req, res, next) => {
 })
 
 router.get("/logout", (req, res) => {
-    if(req.session.userid) {
+    if(req.session) {
         req.session.destroy((err) => {
             if (err) {
                 res.json({message: 'A problem occured logging out please try again.'})
