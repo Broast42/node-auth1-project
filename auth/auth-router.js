@@ -17,4 +17,34 @@ router.post("/register", async (req, res, next) => {
     }
 })
 
+router.post("/login", async(req, res, next) => {
+    try{
+        const { name, password } = req.body
+
+        const user = await db.getUserByName(name)
+
+        if (user && bc.compareSync(password, user.password)){
+            req.session.userid = user.id
+            res.json({message: 'Logged in'})
+        }else{
+            res.status(401).json({message: 'You shall not pass!'})
+        }
+
+    }catch(err){
+        next(err)
+    }
+})
+
+router.get("/logout", (req, res) => {
+    if(req.session.userid) {
+        req.session.destroy((err) => {
+            if (err) {
+                res.json({message: 'A problem occured logging out please try again.'})
+            }else{
+                res.json({message: 'Good Bye'})
+            }
+        })
+    }
+})
+
 module.exports = router

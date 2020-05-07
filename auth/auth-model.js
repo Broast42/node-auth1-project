@@ -4,6 +4,10 @@ function getUsers(){
     return db("users").select("id", "name")
 }
 
+function getUserByName(name){
+    return db("users").where("name", name).first()
+}
+
 function getUsersById(id){
     return db("users").where("id", id).first()
 }
@@ -16,6 +20,7 @@ async function add(user){
 
 module.exports ={
     getUsers,
+    getUserByName,
     getUsersById,
     add,
 }
